@@ -53,21 +53,6 @@ class BotClient(discord.Client):
         self.data = [d for d in self.data if d.id != guild.id]
 
 
-    async def on_member_join(self, member):
-        server = self.get_server(member.guild)
-        invites = await member.guild.invites()
-
-        for invite in invites:
-            if invite.id in server.referral_links.values():
-                flipped = {v : k for k, v in server.referral_links.items()}
-                user = flipped[invite.id]
-
-                if server.logged_referrals[user] != invite.uses:
-                    server.referral_users[user].append(member.id)
-                    server.logged_referrals[user] += 1
-                    return
-
-
     async def on_message(self, message):
 
         if isinstance(message.channel, discord.DMChannel) or message.author.bot or message.content == None:
@@ -158,12 +143,12 @@ class BotClient(discord.Client):
 
 
     async def help(self, message, stripped):
-        embed = discord.Embed(description=self.strings[1], color=self.colors['normal'])
+        embed = discord.Embed(description=self.strings[1])
         await message.channel.send(embed=embed)
 
 
     async def info(self, message, stripped):
-        embed = discord.Embed(description=self.strings[0], color=self.colors['normal'])
+        embed = discord.Embed(description=self.strings[0])
         await message.channel.send(embed=embed)
 
 
