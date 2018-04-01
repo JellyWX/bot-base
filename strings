@@ -1,0 +1,27 @@
+**About Referral Bot**
+__Developed By__
+Jude Southworth
+Sean Hatch
+
+__Produced By__
+Gimmy Bullet
+
+[split]
+
+**Referral Bot Help**
+
+__*Commands*__
+`r!help`: Shows this menu.
+------
+`r!about`: Shows you information about the bot.
+------
+`r!set`: Sets the invite link channel (when user joins, they first see this channel).
+------
+`r!prefix`: This lets you change the bots prefix.
+------
+`r!link`: This give a user their own invite link.
+`r!link new` : replaces an existing invite link with a new one.
+------
+`r!log`: Shows you this list of user that have links and shows you who they have invited using their links.
+`r!log links` : Can be used to view all referral links.
+`r!log mobile` : Shows the links in a mobile-friendly way.
