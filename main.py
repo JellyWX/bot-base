@@ -11,6 +11,7 @@ class BotClient(discord.Client):
         self.get_server = lambda x: [d for d in self.data if d.id == x.id][0]
 
         self.data = []
+        self.DEFAULT_PREFIX = '!'
 
         self.commands = {
             'ping' : self.ping,
@@ -44,7 +45,7 @@ class BotClient(discord.Client):
     async def on_guild_join(self, guild):
         self.data.append(ServerData(**{
             'id' : guild.id,
-            'prefix' : '!'
+            'prefix' : self.DEFAULT_PREFIX
             }
         ))
 
@@ -61,37 +62,9 @@ class BotClient(discord.Client):
         if len([d for d in self.data if d.id == message.guild.id]) == 0:
             self.data.append(ServerData(**{
                 'id' : message.guild.id,
-                'prefix' : '!'
+                'prefix' : self.DEFAULT_PREFIX
                 }
             ))
-
-        else:
-            server = self.get_server(message.guild)
-
-            queue_deletes = []
-            for user in server.referral_links.keys():
-                if message.guild.get_member(user) is None:
-                    queue_deletes.append(user)
-
-            for user in queue_deletes:
-                del server.referral_users[user]
-                del server.referral_links[user]
-                del server.logged_referrals[user]
-
-            queue_deletes = []
-            for user, data in server.referral_users.items():
-                for joiner in data:
-                    if message.guild.get_member(joiner) is None:
-                        queue_deletes.append((user, joiner))
-
-            for user, person in queue_deletes:
-                server.referral_users[user].remove(person)
-
-        invites = await message.guild.invites()
-
-        for invite in invites:
-            if invite.inviter == self.user and invite.id not in server.referral_links.values():
-                await invite.delete()
 
         with open('strings', 'r') as f:
             self.strings = f.read().split('[split]')
